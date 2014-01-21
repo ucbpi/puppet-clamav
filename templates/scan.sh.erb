@@ -1,0 +1,10 @@
+# ClamAV Scan Command - <%= @title %>
+BIN=$(which clamscan)
+INC="<% @include.each do |inc| %> --include=<%= inc %><% end -%>"
+INC_DIR="<% @include_dir.each do |inc| %> --include-dir=<%= inc %><% end -%>"
+EXC="<% @exclude.each do |exc| %> --exclude=<%= exc %><% end -%>"
+EXC_DIR="<% @exclude_dir.each do |exc| %> --exclude-dir=<%= exc %><% end -%>"
+SCAN="<%= @scan.join(' ') %>"
+RECURSIVE="<% if @recursive %>-r<% end -%>"
+
+$BIN $INC $INC_DIR $EXC $EXC_DIR $RECURSIVE $SCAN
