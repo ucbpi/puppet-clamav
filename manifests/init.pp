@@ -3,5 +3,11 @@
 # Install clamav
 #
 class clamav {
-  package { 'clamav': ensure => installed }
+  include clamav::package
+
+  file { [ '/etc/clamav', '/etc/clamav/scans' ]:
+    ensure  => directory,
+    owner   => 'clam',
+    require => Class['clamav::package']
+  }
 }
