@@ -84,10 +84,12 @@ define clamav::scan (
   $scanlog = "/var/log/clamav/scan_${title}",
   $weekday = 'UNSET',
 ) {
+  include clamav::params
   $scancmd = "/etc/clamav/scans/${title}"
+
   file { $scancmd:
     ensure  => present,
-    owner   => 'clam',
+    owner   => $clamav::params::user,
     mode    => '0500',
     content => template('clamav/scan.sh.erb'),
   }

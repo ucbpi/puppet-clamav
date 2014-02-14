@@ -8,9 +8,11 @@ class clamav::freshclam (
   $proxy_username = '',
   $proxy_password = '',
 ) {
+  include clamav::params
+
   file { '/etc/freshclam.conf':
     ensure  => present,
-    owner   => 'clam',
+    owner   => $clamav::params::user,
     mode    => '0400',
     content => template('clamav/freshclam.conf.erb'),
   }
