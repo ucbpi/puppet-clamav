@@ -1,0 +1,6 @@
+2014-02-25 Aaron Russo <arusso@berkeley.edu> - 0.0.2
+* Add support for Debian (antonlindstrom)
+* Add cron job for freshclam
+
+2014-01-29 Aaron Russo <arusso@berkeley.edu> - 0.0.1
+* Initial Release
