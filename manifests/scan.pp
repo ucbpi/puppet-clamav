@@ -77,7 +77,7 @@ define clamav::scan (
   $flags = '',
   $include = [ ],
   $include_dir = [ ],
-  $move = false,
+  $move = '',
   $quiet = true,
   $recursive = false,
   $scan = [ ],
