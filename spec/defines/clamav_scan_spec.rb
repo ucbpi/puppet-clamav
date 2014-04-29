@@ -21,6 +21,20 @@ describe 'clamav::scan' do
     end
   end
 
+  context 'without move directory' do
+    let(:params) { { 'move' => '' } }
+    it { should contain_file('/etc/clamav/scans/virus-scan').without_content(
+      /--move=/
+    )}
+  end
+
+  context 'with move directory' do
+    let(:params) { {'move' => '/var/lib/clamav/quarantine'} }
+    it { should contain_file('/etc/clamav/scans/virus-scan').with_content(
+      /--move=\/var\/lib\/clamav\/quarantine/
+    )}
+  end
+
   context 'scheduled scan' do
     #
     # Test for disabled scans

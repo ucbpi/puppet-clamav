@@ -9,12 +9,13 @@ INC="<% @include.each do |inc| %> --include=<%= inc %><% end -%>"
 INC_DIR="<% @include_dir.each do |inc| %> --include-dir=<%= inc %><% end -%>"
 EXC="<% @exclude.each do |exc| %> --exclude=<%= exc %><% end -%>"
 EXC_DIR="<% @exclude_dir.each do |exc| %> --exclude-dir=<%= exc %><% end -%>"
+MOVE="<% if @move != '' %> --move=<%= @move -%><% end -%>"
 SCAN="<%= @scan.join(' ') %>"
 RECURSIVE="<% if @recursive %>-r<% end -%>"
 QUIET="<% if @quiet %>--quiet<% end -%>"
 LOG="<%= @scanlog %>"
 
-$BIN $INC $INC_DIR $EXC $EXC_DIR $QUIET $RECURSIVE -l $LOG $SCAN
+$BIN $INC $INC_DIR $EXC $EXC_DIR $MOVE $QUIET $RECURSIVE -l $LOG $SCAN
 AVSTATUS=$?
 
 # Detect the result of our scan

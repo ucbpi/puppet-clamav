@@ -77,13 +77,15 @@ define clamav::scan (
   $flags = '',
   $include = [ ],
   $include_dir = [ ],
-  $move = false,
+  $move = '',
   $quiet = true,
   $recursive = false,
   $scan = [ ],
   $scanlog = "/var/log/clamav/scan_${title}",
   $weekday = 'UNSET',
 ) {
+  if $move != '' { validate_absolute_path($move) }
+
   include clamav::params
   $scancmd = "/etc/clamav/scans/${title}"
 
