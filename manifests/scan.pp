@@ -84,6 +84,8 @@ define clamav::scan (
   $scanlog = "/var/log/clamav/scan_${title}",
   $weekday = 'UNSET',
 ) {
+  if $move != '' { validate_absolute_path($move) }
+
   include clamav::params
   $scancmd = "/etc/clamav/scans/${title}"
 
