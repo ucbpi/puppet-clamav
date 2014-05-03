@@ -86,7 +86,7 @@ define clamav::scan (
 ) {
   if $move != '' { validate_absolute_path($move) }
 
-  include clamav::params
+  include clamav
   $scancmd = "/etc/clamav/scans/${title}"
 
   file { $scancmd:
@@ -94,6 +94,7 @@ define clamav::scan (
     owner   => $clamav::params::user,
     mode    => '0500',
     content => template('clamav/scan.sh.erb'),
+    require => Class['Clamav'],
   }
 
   # setup our scheduled job to run this scan

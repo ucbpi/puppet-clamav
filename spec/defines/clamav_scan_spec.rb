@@ -3,6 +3,36 @@ require 'spec_helper'
 describe 'clamav::scan' do
   let(:title) { 'virus-scan' }
 
+  context 'default parameters' do
+    let(:params) { { } }
+    it { should compile }
+    it { should contain_file('/etc/clamav').with({
+      :ensure => 'directory',
+      :owner  => 'clam',
+    })}
+    it { should contain_file('/etc/clamav/scans').with({
+      :ensure => 'directory',
+      :owner  => 'clam',
+    })}
+    it { should contain_file('/etc/clamav/scans/virus-scan').with({
+      :ensure  => 'present',
+      :owner   => 'clam',
+      :mode    => '0500',
+      :require => 'Class[Clamav]',
+      :content => /\/var\/log\/clamav\/scan_virus-scan/,
+    })}
+    it { should contain_cron('clamav-scan-virus-scan').with({
+      :ensure   => 'present',
+      :command  => '/etc/clamav/scans/virus-scan',
+      :hour     => /[0-9]|[1-5][0-9]/,
+      :minute   => /[0-9]|[1-5][0-9]/,
+      :weekday  => nil,
+      :month    => nil,
+      :monthday => nil,
+      :require  => 'File[/etc/clamav/scans/virus-scan]',
+    })}
+  end
+
   context 'verify action items' do
     let(:params) { {
       'action_virus' => '/usr/local/sbin/send-virus-alert',
