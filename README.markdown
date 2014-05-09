@@ -15,6 +15,22 @@ not run on a schedule.
        enable      => false,
      }
 
+Add signature and file whitelist entries in `/var/lib/clamav/local.ign2`,
+`/var/lib/clamav/local.sfp`, and `/var/lib/clamav/local.fp`:
+
+    class { 'clamav':
+      whitelist_sig => [
+	    'ClamAV-Test-Signature',
+		'Eicar-Test-Signature:bc356bae4c42f19a3de16e333ba3569c',
+      ],
+	  whitelist_sha => [
+        'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+        'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+      ],
+      whitelist_md5 => [ 'd41d8cd98f00b204e9800998ecf8427e' ]
+	}
+
+
 License
 -------
 
