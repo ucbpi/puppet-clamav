@@ -4,7 +4,7 @@
 # ClamAV Scan
 # Scan Name: <%= @title %>
 ###############################################################################
-BIN=$(which clamscan)
+BIN='<%= @clamscan %>'
 INC="<% @include.each do |inc| %> --include=<%= inc %><% end -%>"
 INC_DIR="<% @include_dir.each do |inc| %> --include-dir=<%= inc %><% end -%>"
 EXC="<% @exclude.each do |exc| %> --exclude=<%= exc %><% end -%>"
