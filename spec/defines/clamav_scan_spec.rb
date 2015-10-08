@@ -75,12 +75,7 @@ describe 'clamav::scan' do
   context 'with an invalid binary defined' do
     let :params do { :clamscan_bin => '$(which clamscan)' } end
     it do
-      expect {
-        should compile
-      }.to raise_error(
-        Puppet::Error,
-        /"\$\(which clamscan\)" is not an absolute path./
-      )
+      should compile.and_raise_error(/"\$\(which clamscan\)" is not an absolute path./)
     end
   end
 

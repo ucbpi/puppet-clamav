@@ -118,9 +118,7 @@ describe 'clamav' do
     end
 
     it do
-      expect {
-        should compile
-      }.to raise_error(Puppet::Error, /is not an Array.  It looks to be a String./)
+      should compile.and_raise_error(/is not an Array/)
     end
   end
 end
