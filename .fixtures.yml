@@ -4,4 +4,4 @@ fixtures:
   repositories:
     "stdlib":
       repo: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
-      ref: "2.6.0"
+      ref: "4.2.1"

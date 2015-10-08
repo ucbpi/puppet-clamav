@@ -19,7 +19,7 @@ describe 'clamav::scan' do
       :owner   => 'clam',
       :mode    => '0500',
       :require => 'Class[Clamav]',
-      :content => /\/var\/log\/clamav\/scan_virus-scan/,
+      :content => /^BIN='\/usr\/bin\/clamscan'$/,
     })}
     it { should contain_cron('clamav-scan-virus-scan').with({
       :ensure   => 'present',
@@ -63,6 +63,25 @@ describe 'clamav::scan' do
     it { should contain_file('/etc/clamav/scans/virus-scan').with_content(
       /--move=\/var\/lib\/clamav\/quarantine/
     )}
+  end
+
+  context 'with an alternative binary defined' do
+    let :params do { :clamscan_bin => '/usr/local/bin/clamscan' } end
+    it { should contain_file('/etc/clamav/scans/virus-scan').with_content(
+      /^BIN='\/usr\/local\/bin\/clamscan'$/
+    )}
+  end
+
+  context 'with an invalid binary defined' do
+    let :params do { :clamscan_bin => '$(which clamscan)' } end
+    it do
+      expect {
+        should compile
+      }.to raise_error(
+        Puppet::Error,
+        /"\$\(which clamscan\)" is not an absolute path./
+      )
+    end
   end
 
   context 'scheduled scan' do

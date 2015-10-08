@@ -83,11 +83,20 @@ define clamav::scan (
   $scan = [ ],
   $scanlog = "/var/log/clamav/scan_${title}",
   $weekday = 'UNSET',
+  $clamscan_bin = 'UNSET',
 ) {
   if $move != '' { validate_absolute_path($move) }
 
   include clamav
   $scancmd = "/etc/clamav/scans/${title}"
+
+  case $clamscan_bin {
+    'UNSET': { $clamscan = $::clamav::params::clamscan_bin }
+    default: {
+      validate_absolute_path($clamscan_bin)
+      $clamscan = $clamscan_bin
+    }
+  }
 
   file { $scancmd:
     ensure  => present,
