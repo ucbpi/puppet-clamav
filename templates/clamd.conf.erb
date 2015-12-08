@@ -1,0 +1,606 @@
+# This file is managed by Puppet
+
+# Uncomment this option to enable logging.
+# LogFile must be writable for the user running daemon.
+# A full path is required.
+# Default: disabled
+LogFile <%= @log_file %>
+
+# By default the log file is locked for writing - the lock protects against
+# running clamd multiple times (if want to run another clamd, please
+# copy the configuration file, change the LogFile variable, and run
+# the daemon with --config-file option).
+# This option disables log file locking.
+# Default: no
+LogFileUnlock <%= @log_file_unlock %>
+
+# Maximum size of the log file.
+# Value of 0 disables the limit.
+# You may use 'M' or 'm' for megabytes (1M = 1m = 1048576 bytes)
+# and 'K' or 'k' for kilobytes (1K = 1k = 1024 bytes). To specify the size
+# in bytes just don't use modifiers. If LogFileMaxSize is enabled, log
+# rotation (the LogRotate option) will always be enabled.
+# Default: 1M
+LogFileMaxSize <%= @log_file_max_size %>
+
+# Log time with each message.
+# Default: no
+LogTime <%= @log_time %>
+
+# Also log clean files. Useful in debugging but drastically increases the
+# log size.
+# Default: no
+LogClean <%= @log_clean %>
+
+# Use system logger (can work together with LogFile).
+# Default: no
+LogSyslog <%= @log_syslog %>
+
+# Specify the type of syslog messages - please refer to 'man syslog'
+# for facility names.
+# Default: LOG_LOCAL6
+LogFacility <%= @log_facility %>
+
+# Enable verbose logging.
+# Default: no
+LogVerbose <%= @log_verbose %>
+
+# Enable log rotation. Always enabled when LogFileMaxSize is enabled.
+# Default: no
+LogRotate <%= @log_rotate %>
+
+# Log additional information about the infected file, such as its
+# size and hash, together with the virus name.
+#ExtendedDetectionInfo yes
+
+# This option allows you to save a process identifier of the listening
+# daemon (main thread).
+# Default: disabled
+PidFile <%= @pid_file %>
+
+# Optional path to the global temporary directory.
+# Default: system specific (usually /tmp or /var/tmp).
+TemporaryDirectory <%= @temporary_directory %>
+
+# Path to the database directory.
+# Default: hardcoded (depends on installation options)
+DatabaseDirectory <%= @database_directory %>
+
+# Only load the official signatures published by the ClamAV project.
+# Default: no
+OfficialDatabaseOnly <%= @official_database_only %>
+
+# The daemon can work in local mode, network mode or both.
+# Due to security reasons we recommend the local mode.
+
+# Path to a local socket file the daemon will listen on.
+# Default: disabled (must be specified by a user)
+LocalSocket <%= @local_socket %>
+
+# Sets the group ownership on the unix socket.
+# Default: disabled (the primary group of the user running clamd)
+<% if @local_socket_group == 'UNSET' %>#<% end %>LocalSocketGroup <%= @local_socket_group %>
+
+# Sets the permissions on the unix socket to the specified mode.
+# Default: disabled (socket is world accessible)
+<% if @local_socket_mode == 'UNSET' %>#<% end %>LocalSocketMode <%= @local_socket_mode %>
+
+# Remove stale socket after unclean shutdown.
+# Default: yes
+FixStaleSocket <%= @fix_stale_socket %>
+
+# TCP port address.
+# Default: no
+TCPSocket <%= @tcp_socket %>
+
+# TCP address.
+# By default we bind to INADDR_ANY, probably not wise.
+# Enable the following to provide some degree of protection
+# from the outside world. This option can be specified multiple
+# times if you want to listen on multiple IPs. IPv6 is now supported.
+# Default: no
+<% @tcp_addr.each do |addr| -%>
+TCPAddr <%= addr %>
+<% end -%>
+
+# Maximum length the queue of pending connections may grow to.
+# Default: 200
+MaxConnectionQueueLength <%= @max_connection_queue_length %>
+
+# Clamd uses FTP-like protocol to receive data from remote clients.
+# If you are using clamav-milter to balance load between remote clamd daemons
+# on firewall servers you may need to tune the options below.
+
+# Close the connection when the data size limit is exceeded.
+# The value should match your MTA's limit for a maximum attachment size.
+# Default: 25M
+StreamMaxLength <%= @stream_max_length %>
+
+# Limit port range.
+# Default: 1024
+StreamMinPort <%= @stream_min_port %>
+# Default: 2048
+StreamMaxPort <%= @stream_max_port %>
+
+# Maximum number of threads running at the same time.
+# Default: 10
+MaxThreads <%= @max_threads %>
+
+# Waiting for data from a client socket will timeout after this time (seconds).
+# Default: 120
+ReadTimeout <%= @read_timeout %>
+
+# This option specifies the time (in seconds) after which clamd should
+# timeout if a client doesn't provide any initial command after connecting.
+# Default: 5
+CommandReadTimeout <%= @command_read_timeout %>
+
+# This option specifies how long to wait (in miliseconds) if the send buffer is full.
+# Keep this value low to prevent clamd hanging
+#
+# Default: 500
+SendBufTimeout <%= @send_buf_timeout %>
+
+# Maximum number of queued items (including those being processed by MaxThreads threads)
+# It is recommended to have this value at least twice MaxThreads if possible.
+# WARNING: you shouldn't increase this too much to avoid running out  of file descriptors,
+# the following condition should hold:
+# MaxThreads*MaxRecursion + (MaxQueue - MaxThreads) + 6< RLIMIT_NOFILE (usual max is 1024)
+#
+# Default: 100
+MaxQueue <%= @max_queue %>
+
+# Waiting for a new job will timeout after this time (seconds).
+# Default: 30
+IdleTimeout <%= @idle_timeout %>
+
+# Don't scan files and directories matching regex
+# This directive can be used multiple times
+# Default: scan all
+<% @exclude_path.each do |path| -%>
+ExcludePath <%= path %>
+<% end -%>
+
+# Maximum depth directories are scanned at.
+# Default: 15
+MaxDirectoryRecursion <%= @max_directory_recursion %>
+
+# Follow directory symlinks.
+# Default: no
+FollowDirectorySymlinks <%= @follow_directory_symlinks %>
+
+# Follow regular file symlinks.
+# Default: no
+FollowFileSymlinks <%= @follow_file_symlinks %>
+
+# Scan files and directories on other filesystems.
+# Default: yes
+CrossFilesystems <%= @cross_filesystems %>
+
+# Perform a database check.
+# Default: 600 (10 min)
+SelfCheck <%= @self_check %>
+
+# Execute a command when virus is found. In the command string %v will
+# be replaced with the virus name.
+# Default: no
+<% if @virus_event == 'no' || @virus_event == 'UNSET' %>#<% end %>VirusEvent <%= @virus_event %>
+
+# Run as another user (clamd must be started by root for this option to work)
+# Default: don't drop privileges
+User <%= @user %>
+
+# Initialize supplementary group access (clamd must be started by root).
+# Default: no
+AllowSupplementaryGroups <%= @allow_supplementary_groups %>
+
+# Stop daemon when libclamav reports out of memory condition.
+ExitOnOOM <%= @exit_on_oom %>
+
+# Don't fork into background.
+# Default: no
+Foreground <%= @foreground %>
+
+# Enable debug messages in libclamav.
+# Default: no
+Debug <%= @debug %>
+
+# Do not remove temporary files (for debug purposes).
+# Default: no
+LeaveTemporaryFiles <%= @leave_temporary_files %>
+
+# Permit use of the ALLMATCHSCAN command. If set to no, clamd will reject
+# any ALLMATCHSCAN command as invalid.
+# Default: yes
+AllowAllMatchScan <%= @allow_all_match_scan %>
+
+# Detect Possibly Unwanted Applications.
+# Default: no
+DetectPUA <%= @detect_pua %>
+
+# Exclude a specific PUA category. This directive can be used multiple times.
+# See https://github.com/vrtadmin/clamav-faq/blob/master/faq/faq-pua.md for 
+# the complete list of PUA categories.
+# Default: Load all categories (if DetectPUA is activated)
+<% @exclude_pua.each do |ex| -%>
+ExcludePUA <%= ex %>
+<% end -%>
+
+# Only include a specific PUA category. This directive can be used multiple
+# times.
+# Default: Load all categories (if DetectPUA is activated)
+<% @include_pua.each do |ip| -%>
+IncludePUA <%= ip %>
+<% end -%>
+
+# In some cases (eg. complex malware, exploits in graphic files, and others),
+# ClamAV uses special algorithms to provide accurate detection. This option
+# controls the algorithmic detection.
+# Default: yes
+AlgorithmicDetection <%= @algorithm_detection %>
+
+# This option causes memory or nested map scans to dump the content to disk.
+# If you turn on this option, more data is written to disk and is available
+# when the LeaveTemporaryFiles option is enabled.
+ForceToDisk <%= @force_to_disk %>
+
+# This option allows you to disable the caching feature of the engine. By
+# default, the engine will store an MD5 in a cache of any files that are
+# not flagged as virus or that hit limits checks. Disabling the cache will
+# have a negative performance impact on large scans.
+# Default: no
+DisableCache <%= @disable_cache %>
+
+##
+## Executable files
+##
+
+# PE stands for Portable Executable - it's an executable file format used
+# in all 32 and 64-bit versions of Windows operating systems. This option allows
+# ClamAV to perform a deeper analysis of executable files and it's also
+# required for decompression of popular executable packers such as UPX, FSG,
+# and Petite. If you turn off this option, the original files will still be
+# scanned, but without additional processing.
+# Default: yes
+ScanPE <%= @scan_pe %>
+
+# Certain PE files contain an authenticode signature. By default, we check
+# the signature chain in the PE file against a database of trusted and
+# revoked certificates if the file being scanned is marked as a virus.
+# If any certificate in the chain validates against any trusted root, but
+# does not match any revoked certificate, the file is marked as whitelisted.
+# If the file does match a revoked certificate, the file is marked as virus.
+# The following setting completely turns off authenticode verification.
+# Default: no
+DisableCertCheck <%= @disable_cert_check %>
+
+# Executable and Linking Format is a standard format for UN*X executables.
+# This option allows you to control the scanning of ELF files.
+# If you turn off this option, the original files will still be scanned, but
+# without additional processing.
+# Default: yes
+ScanELF <%= @scan_elf %>
+
+# With this option clamav will try to detect broken executables (both PE and
+# ELF) and mark them as Broken.Executable.
+# Default: no
+DetectBrokenExecutables <%= @detect_broken_executables %>
+
+
+##
+## Documents
+##
+
+# This option enables scanning of OLE2 files, such as Microsoft Office
+# documents and .msi files.
+# If you turn off this option, the original files will still be scanned, but
+# without additional processing.
+# Default: yes
+ScanOLE2 <%= @scan_ole2 %>
+
+# With this option enabled OLE2 files with VBA macros, which were not
+# detected by signatures will be marked as "Heuristics.OLE2.ContainsMacros".
+# Default: no
+OLE2BlockMacros <%= @ole2_block_macros %>
+
+# This option enables scanning within PDF files.
+# If you turn off this option, the original files will still be scanned, but
+# without decoding and additional processing.
+# Default: yes
+ScanPDF <%= @scan_pdf %>
+
+# This option enables scanning within SWF files.
+# If you turn off this option, the original files will still be scanned, but
+# without decoding and additional processing.
+# Default: yes
+ScanSWF <%= @scan_swf %>
+
+
+##
+## Mail files
+##
+
+# Enable internal e-mail scanner.
+# If you turn off this option, the original files will still be scanned, but
+# without parsing individual messages/attachments.
+# Default: yes
+ScanMail <%= @scan_mail %>
+
+# Scan RFC1341 messages split over many emails.
+# You will need to periodically clean up $TemporaryDirectory/clamav-partial directory.
+# WARNING: This option may open your system to a DoS attack.
+#	   Never use it on loaded servers.
+# Default: no
+#ScanPartialMessages yes
+
+# With this option enabled ClamAV will try to detect phishing attempts by using
+# signatures.
+# Default: yes
+PhishingSignatures <%= @phishing_signatures %>
+
+# Scan URLs found in mails for phishing attempts using heuristics.
+# Default: yes
+PhishingScanURLs <%= @phishing_scan_urls %>
+
+# Always block SSL mismatches in URLs, even if the URL isn't in the database.
+# This can lead to false positives.
+#
+# Default: no
+PhishingAlwaysBlockSSLMismatch <%= @phishing_always_block_ssl_mismatch %>
+
+# Always block cloaked URLs, even if URL isn't in database.
+# This can lead to false positives.
+#
+# Default: no
+PhishingAlwaysBlockCloak <%= @phishing_always_block_cloak %>
+
+# Detect partition intersections in raw disk images using heuristics.
+# Default: no
+PartitionIntersection <%= partition_intersection %>
+
+# Allow heuristic match to take precedence.
+# When enabled, if a heuristic scan (such as phishingScan) detects
+# a possible virus/phish it will stop scan immediately. Recommended, saves CPU
+# scan-time.
+# When disabled, virus/phish detected by heuristic scans will be reported only at
+# the end of a scan. If an archive contains both a heuristically detected
+# virus/phish, and a real malware, the real malware will be reported
+#
+# Keep this disabled if you intend to handle "*.Heuristics.*" viruses 
+# differently from "real" malware.
+# If a non-heuristically-detected virus (signature-based) is found first, 
+# the scan is interrupted immediately, regardless of this config option.
+#
+# Default: no
+HeuristicScanPrecedence <%= @heuristic_scan_precedence %>
+
+
+##
+## Data Loss Prevention (DLP)
+##
+
+# Enable the DLP module
+# Default: No
+StructuredDataDetection <%= @structured_data_detection %>
+
+# This option sets the lowest number of Credit Card numbers found in a file
+# to generate a detect.
+# Default: 3
+StructuredMinCreditCardCount <%= @structured_min_credit_card_count %>
+
+# This option sets the lowest number of Social Security Numbers found
+# in a file to generate a detect.
+# Default: 3
+StructuredMinSSNCount <%= @structured_min_ssn_count %>
+
+# With this option enabled the DLP module will search for valid
+# SSNs formatted as xxx-yy-zzzz
+# Default: yes
+StructuredSSNFormatNormal <%= @structured_ssn_format_normal %>
+
+# With this option enabled the DLP module will search for valid
+# SSNs formatted as xxxyyzzzz
+# Default: no
+StructuredSSNFormatStripped <%= @structured_ssn_format_stripped %>
+
+
+##
+## HTML
+##
+
+# Perform HTML normalisation and decryption of MS Script Encoder code.
+# Default: yes
+# If you turn off this option, the original files will still be scanned, but
+# without additional processing.
+ScanHTML <%= @scan_html %>
+
+
+##
+## Archives
+##
+
+# ClamAV can scan within archives and compressed files.
+# If you turn off this option, the original files will still be scanned, but
+# without unpacking and additional processing.
+# Default: yes
+ScanArchive <%= @scan_archive %>
+
+# Mark encrypted archives as viruses (Encrypted.Zip, Encrypted.RAR).
+# Default: no
+ArchiveBlockEncrypted <%= @archive_block_encrypted %>
+
+
+##
+## Limits
+##
+
+# The options below protect your system against Denial of Service attacks
+# using archive bombs.
+
+# This option sets the maximum amount of data to be scanned for each input file.
+# Archives and other containers are recursively extracted and scanned up to this
+# value.
+# Value of 0 disables the limit
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 100M
+MaxScanSize <%= @max_scan_size %>
+
+# Files larger than this limit won't be scanned. Affects the input file itself
+# as well as files contained inside it (when the input file is an archive, a
+# document or some other kind of container).
+# Value of 0 disables the limit.
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 25M
+MaxFileSize <%= @max_file_size %>
+
+# Nested archives are scanned recursively, e.g. if a Zip archive contains a RAR
+# file, all files within it will also be scanned. This options specifies how
+# deeply the process should be continued.
+# Note: setting this limit too high may result in severe damage to the system.
+# Default: 16
+MaxRecursion <%= @max_recursion %>
+
+# Number of files to be scanned within an archive, a document, or any other
+# container file.
+# Value of 0 disables the limit.
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 10000
+MaxFiles <%= @max_files %>
+
+# Maximum size of a file to check for embedded PE. Files larger than this value
+# will skip the additional analysis step.
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 10M
+MaxEmbeddedPE <%= @max_embedded_pe %>
+
+# Maximum size of a HTML file to normalize. HTML files larger than this value
+# will not be normalized or scanned.
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 10M
+MaxHTMLNormalize <%= @max_html_normalize %>
+
+# Maximum size of a normalized HTML file to scan. HTML files larger than this
+# value after normalization will not be scanned.
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 2M
+MaxHTMLNoTags <%= @max_html_no_tags %>
+
+# Maximum size of a script file to normalize. Script content larger than this
+# value will not be normalized or scanned.
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 5M
+MaxScriptNormalize <%= @max_script_normalize %>
+
+# Maximum size of a ZIP file to reanalyze type recognition. ZIP files larger
+# than this value will skip the step to potentially reanalyze as PE.
+# Note: disabling this limit or setting it too high may result in severe damage
+# to the system.
+# Default: 1M
+MaxZipTypeRcg <%= @max_zip_type_rcg %>
+
+# This option sets the maximum number of partitions of a raw disk image to be scanned.
+# Raw disk images with more partitions than this value will have up to the value number
+# partitions scanned. Negative values are not allowed.
+# Note: setting this limit too high may result in severe damage or impact performance.
+# Default: 50
+MaxPartitions <%= @max_partitions %>
+
+# This option sets the maximum number of icons within a PE to be scanned.
+# PE files with more icons than this value will have up to the value number icons scanned.
+# Negative values are not allowed.
+# WARNING: setting this limit too high may result in severe damage or impact performance.
+# Default: 100
+MaxIconsPE <%= @max_icons_pe %>
+
+##
+## On-access Scan Settings
+##
+
+# Enable on-access scanning. Currently, this is supported via fanotify.
+# Clamuko/Dazuko support has been deprecated.
+# Default: no
+ScanOnAccess <%= @scan_on_access %>
+
+# Don't scan files larger than OnAccessMaxFileSize
+# Value of 0 disables the limit.
+# Default: 5M
+OnAccessMaxFileSize <%= @on_access_max_file_size %>
+
+# Set the include paths (all files inside them will be scanned). You can have
+# multiple OnAccessIncludePath directives but each directory must be added
+# in a separate line. (On-access scan only)
+# Default: disabled
+<% [ @on_access_include_path ].flatten.each do |path| %>
+OnAccessIncludePath <%= path %>
+<% end -%>
+
+# Set the exclude paths. All subdirectories are also excluded.
+# (On-access scan only)
+# Default: disabled
+<% [ @on_access_exclude_path ].flatten.each do |path| %>
+OnAccessExcludePath <%= path %>
+<% end -%>
+
+# With this option you can whitelist specific UIDs. Processes with these UIDs
+# will be able to access all files.
+# This option can be used multiple times (one per line).
+# Default: disabled
+<% [ @on_access_exclude_uid ].flatten.each do |uid| -%>
+OnAccessExcludeUID <%= uid %>
+<% end -%>
+
+
+##
+## Bytecode
+##
+
+# With this option enabled ClamAV will load bytecode from the database. 
+# It is highly recommended you keep this option on, otherwise you'll miss detections for many new viruses.
+# Default: yes
+Bytecode <%= @bytecode %>
+
+# Set bytecode security level.
+# Possible values:
+#       None - no security at all, meant for debugging. DO NOT USE THIS ON PRODUCTION SYSTEMS
+#         This value is only available if clamav was built with --enable-debug!
+#       TrustSigned - trust bytecode loaded from signed .c[lv]d files,
+#                insert runtime safety checks for bytecode loaded from other sources
+#       Paranoid - don't trust any bytecode, insert runtime checks for all
+# Recommended: TrustSigned, because bytecode in .cvd files already has these checks
+# Note that by default only signed bytecode is loaded, currently you can only
+# load unsigned bytecode in --enable-debug mode.
+#
+# Default: TrustSigned
+BytecodeSecurity <%= @bytecode_security %>
+
+# Set bytecode timeout in miliseconds.
+#
+# Default: 5000
+BytecodeTimeout <%= @bytecode_timeout %>
+
+##
+## Statistics gathering and submitting
+##
+
+# Enable statistical reporting.
+# Default: no
+StatsEnabled <%= @stats_enabled %>
+
+# Disable submission of individual PE sections for files flagged as malware.
+# Default: no
+StatsPEDisabled <%= @stats_pe_disabled %>
+
+# HostID in the form of an UUID to use when submitting statistical information.
+# Default: auto
+StatsHostID <%= @stats_host_id %>
+
+# Time in seconds to wait for the stats server to come back with a response
+# Default: 10
+StatsTimeout <%= @stats_timeout %>
