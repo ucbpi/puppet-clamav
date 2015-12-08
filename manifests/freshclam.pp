@@ -46,6 +46,12 @@ class clamav::freshclam (
     require => File['/etc/freshclam.conf'],
   }
 
+  # remove the freshclam cron that is installed with the package
+  file { '/etc/cron.daily/freshclam':
+    ensure  => absent,
+    require => File['/etc/freshclam.conf'],
+  }
+
   # ensure proper permissions on our logfile
   file { $logfile:
     ensure  => present,
