@@ -30,6 +30,7 @@ class clamav::freshclam (
     owner   => $clamav::params::user,
     mode    => '0400',
     content => template('clamav/freshclam.conf.erb'),
+    require => Package[$clamav::params::package],
   }
 
   $cron_ensure = $enable ? {

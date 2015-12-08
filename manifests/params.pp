@@ -10,4 +10,5 @@ class clamav::params {
     }
   }
 
+  $package = 'clamav'
 }

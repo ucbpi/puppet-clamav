@@ -1,3 +1,9 @@
+# == Class: clamav::package
+#
+# Installs the clamav package
+#
 class clamav::package {
-  package { 'clamav': ensure => installed }
+  include clamav::params
+
+  package { $clamav::params::package: ensure => installed }
 }
