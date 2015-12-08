@@ -1,0 +1,14 @@
+{
+  "name": "arusso-clamav",
+  "version": "0.1.0",
+  "author": "arusso",
+  "summary": "clamav management",
+  "license": "MIT",
+  "source": "https://github.com/arusso/puppet-clamav",
+  "project_page": "https://github.com/arusso/puppet-clamav",
+  "issues_url": "https://github.com/arusso/puppet-clamav/issues",
+  "description": "ClamAV Management",
+  "dependencies": [
+    {"version_requirement":">= 4.0.0","name":"puppetlabs/stdlib"}
+  ]
+}
