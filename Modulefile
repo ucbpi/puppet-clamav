@@ -1,5 +1,5 @@
 name 'arusso-clamav'
-version '0.0.2'
+version '0.1.0'
 summary "clamav management"
 description "ClamAV Management"
 project_page "https://github.com/arusso/puppet-clamav"

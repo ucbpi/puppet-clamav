@@ -1,3 +1,6 @@
+2015-12-08 Aaron Russo <arusso@berkeley.edu> - 0.1.0
+* Add support for clamd
+
 2014-02-25 Aaron Russo <arusso@berkeley.edu> - 0.0.2
 * Add support for Debian (antonlindstrom)
 * Add cron job for freshclam
