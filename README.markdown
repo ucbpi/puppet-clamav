@@ -1,9 +1,10 @@
 # ClamAV Puppet Module #
 
-This module manages clamav by installing required software, and setting up
-scan jobs that can be run via cron or manually on the target host.
+This module provides mechanisms to manage clamav, allowing for the creation of
+scheduled scans via the `clamav::scan` define as well as running the clamd
+daemon using the `clamav::clamd` class.
 
-Examples
+ Examples
 --------
 
 Setup a clamav scan that scans everything except the /sys and /dev, and does
@@ -28,8 +29,20 @@ Add signature and file whitelist entries in `/var/lib/clamav/local.ign2`,
         'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
       ],
       whitelist_md5 => [ 'd41d8cd98f00b204e9800998ecf8427e' ]
-	}
+	  }
 
+Enable clamd:
+
+    include clamav::clamd
+
+Enable clamd and setup on-access scanning
+
+    class { 'clamav::clamd':
+      scan_on_access          => 'yes',
+      on_access_max_file_size => '15M',
+      on_access_exclude_path  => [ '/srv/noscan' ],
+      on_access_include_path  => [ '/srv' ],
+    }
 
 License
 -------
