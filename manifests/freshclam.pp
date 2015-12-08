@@ -17,7 +17,7 @@ class clamav::freshclam (
   $enable = hiera('clamav::freshclam::enable',true),
   $minute = hiera('clamav::freshclam::minute',fqdn_rand(59)),
   $hour = hiera('clamav::freshclam::hour',fqdn_rand(23)),
-  $command = hiera('clamav::freshclam::command','/usr/bin/freshclam'),
+  $command = hiera('clamav::freshclam::command','/usr/bin/freshclam --quiet'),
   $proxy_server = hiera('clamav::freshclam::proxy_server',''),
   $proxy_port = hiera('clamav::freshclam::proxy_port',''),
   $proxy_username = hiera('clamav::freshclam::proxy_username',''),
