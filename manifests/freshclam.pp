@@ -22,6 +22,7 @@ class clamav::freshclam (
   $proxy_port = hiera('clamav::freshclam::proxy_port',''),
   $proxy_username = hiera('clamav::freshclam::proxy_username',''),
   $proxy_password = hiera('clamav::freshclam::proxy_password',''),
+  $logfile = '/var/log/clamav/freshclam.log',
 ) {
   include clamav::params
 
@@ -42,6 +43,14 @@ class clamav::freshclam (
     command => $command,
     minute  => $minute,
     hour    => $hour,
+    require => File['/etc/freshclam.conf'],
+  }
+
+  # ensure proper permissions on our logfile
+  file { $logfile:
+    ensure  => present,
+    owner   => $clamav::params::user,
+    mode    => '0644',
     require => File['/etc/freshclam.conf'],
   }
 }
