@@ -116,10 +116,18 @@ DatabaseMirror db.local.clamav.net
 #HTTPProxyPort 1234
 #HTTPProxyUsername myusername
 #HTTPProxyPassword mypass
-<% if @proxy_server != "" %>HTTPProxyServer <%= @proxy_server %><% end -%>
-<% if @proxy_port != "" %>HTTPProxyPort <%= @proxy_port %><% end -%>
-<% if @proxy_username != "" %>HTTPProxyUsername <%= @proxy_username %><% end -%>
-<% if @proxy_password != "" %>HTTPProxyPassword <%= @proxy_password %><% end -%>
+<% if @proxy_server != "" -%>
+HTTPProxyServer <%= @proxy_server %>
+<% end -%>
+<% if @proxy_port != "" -%>
+HTTPProxyPort <%= @proxy_port %>
+<% end -%>
+<% if @proxy_username != "" -%>
+HTTPProxyUsername <%= @proxy_username %>
+<% end -%>
+<% if @proxy_password != "" -%>
+HTTPProxyPassword <%= @proxy_password %>
+<% end -%>
 
 # If your servers are behind a firewall/proxy which applies User-Agent
 # filtering you can use this option to force the use of a different

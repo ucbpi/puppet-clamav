@@ -1,3 +1,6 @@
+2015-12-11 Aaron Russo <arusso@berkeley.edu> - 0.1.1
+* Fix whitespace errors for freshclam proxy directives
+
 2015-12-08 Aaron Russo <arusso@berkeley.edu> - 0.1.0
 * Add support for clamd
 
