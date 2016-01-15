@@ -2,6 +2,7 @@ language: ruby
 rvm:
 - 1.8.7
 - 2.0.0
+- 2.1.0
 script: bundle exec rake spec
 branches:
   only:
@@ -14,18 +15,16 @@ notifications:
   slack:
     secure: TTrTXSnS4esBiupqT/j/Y3UyLx+0683MCpyp5hIUQ0x/jc27RMco5xNj1/Gyp7VQLskRpdsOLZ4jNzKHDrM2Rkokr3ubm15v0nBo1ORN39/Suw2OnVMmfC00cdeqMGlxGlryerBtyiqP17hSi1TeFti9Vj6HILRqErtFe+Am918=
 env:
-- PUPPET_VERSION="~> 2.7.0"
 - PUPPET_VERSION="~> 3.8.0"
+- PUPPET_VERSION="~> 3.8.0" PARSER="future"
+- PUPPET_VERSION="~> 4.1.0"
+- PUPPET_VERSION="~> 4.2.0"
+- PUPPET_VERSION="~> 4.3.0"
 matrix:
   exclude:
-  - rvm: 2.0.0
-    env: PUPPET_VERSION="~> 2.7.0"
-  include:
   - rvm: 1.8.7
-    env:
-    - PUPPET_VERSION="~> 3.8.0"
-    - PARSER="future"
-  - rvm: 2.0.0
-    env:
-    - PUPPET_VERSION="~> 3.8.0"
-    - PARSER="future"
+    env: PUPPET_VERSION="~> 4.1.0"
+  - rvm: 1.8.7
+    env: PUPPET_VERSION="~> 4.2.0"
+  - rvm: 1.8.7
+    env: PUPPET_VERSION="~> 4.3.0"
