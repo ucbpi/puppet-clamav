@@ -5,6 +5,7 @@ class clamav::params {
       $clamscan_bin = '/usr/bin/clamscan'
     }
     default: {
+      # we default to assuming RedHat family OSes
       $user = 'clam'
       $clamscan_bin = '/usr/bin/clamscan'
     }
