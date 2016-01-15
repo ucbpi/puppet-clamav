@@ -14,8 +14,9 @@ SCAN="<%= @scan.join(' ') %>"
 RECURSIVE="<% if @recursive %>-r<% end -%>"
 QUIET="<% if @quiet %>--quiet<% end -%>"
 LOG="<%= @scanlog %>"
+FLAGS="<%= @flags %>"
 
-$BIN $INC $INC_DIR $EXC $EXC_DIR $MOVE $QUIET $RECURSIVE -l $LOG $SCAN
+$BIN $INC $INC_DIR $EXC $EXC_DIR $MOVE $QUIET $RECURSIVE -l $LOG $FLAGS $SCAN
 AVSTATUS=$?
 
 # Detect the result of our scan
