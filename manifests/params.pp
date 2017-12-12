@@ -3,21 +3,22 @@ class clamav::params {
     'Debian': {
       $user = 'clamav'
       $clamscan_bin = '/usr/bin/clamscan'
-    }
+      $clamd_package_name = 'clamav-daemon'
+      $clamd_service_name = 'clamav-daemon'    }
     default: {
       # we default to assuming RedHat family OSes
       $user = 'clam'
       $clamscan_bin = '/usr/bin/clamscan'
+      $clamd_package_name = 'clamd'
+      $clamd_service_name = 'clamd'
     }
   }
 
   $package = 'clamav'
 
   $clamd_config_file = '/etc/clamd.conf'
-  $clamd_service_name = 'clamd'
   $clamd_service_enable = true
   $clamd_service_ensure = 'running'
-  $clamd_package_name = 'clamd'
   $clamd_log_file = '/var/log/clamav/clamd.log'
   $clamd_log_file_unlock = 'no'
   $clamd_log_file_max_size = '0'
