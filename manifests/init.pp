@@ -55,4 +55,8 @@ class clamav (
     ensure  => $whitelist_md5_ensure,
     content => template('clamav/whitelist.fp.erb')
   }
+
+  file { '/var/log/clamav':
+      ensure => directory,
+  }
 }
