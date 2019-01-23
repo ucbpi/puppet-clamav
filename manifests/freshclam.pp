@@ -26,7 +26,7 @@ class clamav::freshclam (
 ) {
   include clamav::params
 
-  file { '/etc/freshclam.conf':
+  file { "$clamav::params::freshclam_config_file":
     ensure  => present,
     owner   => $clamav::params::user,
     mode    => '0400',
@@ -43,13 +43,21 @@ class clamav::freshclam (
     command => $command,
     minute  => $minute,
     hour    => $hour,
-    require => File['/etc/freshclam.conf'],
+    require => File[ "$clamav::params::freshclam_config_file"],
+  }
+
+  # $enable means the cron job
+  if ( $osfamily = 'Debian' and $enable == false ) {
+    service { "clamav freshclam":
+    	ensure    => running,
+    	subscribe => File["$clamav::params::freshclam_config_file"],
+    }
   }
 
   # remove the freshclam cron that is installed with the package
   file { '/etc/cron.daily/freshclam':
     ensure  => absent,
-    require => File['/etc/freshclam.conf'],
+    require => File[ "$clamav::params::freshclam_config_file"],
   }
 
   # ensure proper permissions on our logfile
@@ -57,6 +65,6 @@ class clamav::freshclam (
     ensure  => present,
     owner   => $clamav::params::user,
     mode    => '0644',
-    require => File['/etc/freshclam.conf'],
+    require => File[ "$clamav::params::freshclam_config_file"],
   }
 }

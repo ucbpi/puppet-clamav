@@ -3,6 +3,7 @@ class clamav::params {
     'Debian': {
       $user = 'clamav'
       $clamscan_bin = '/usr/bin/clamscan'
+      $freshclam_config_file = '/etc/clamav/freshclam.conf'
     }
     'RedHat': {
     	$user = $facts['os']['release']['major'] ? {
@@ -10,10 +11,12 @@ class clamav::params {
 	  default => 'root',
 	}
       $clamscan_bin = '/usr/bin/clamscan'
+      $freshclam_config_file = '/etc/freshclam.conf'
     }
     default: {
       $user = 'clam'
       $clamscan_bin = '/usr/bin/clamscan'
+      $freshclam_config_file = '/etc/freshclam.conf'
     }
   }
 
