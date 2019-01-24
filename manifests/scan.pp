@@ -112,17 +112,18 @@ define clamav::scan (
     default => 'absent',
   }
   $month_r = $month ? {
-    'UNSET' => undef,
+    'UNSET' => '*',
     default => $month,
   }
   $monthday_r = $monthday ? {
-    'UNSET' => undef,
+    'UNSET' => '*',
     default => $monthday,
   }
   $weekday_r = $weekday ? {
-    'UNSET' => undef,
+    'UNSET' => '*',
     default => $weekday,
   }
+
   cron { "clamav-scan-${title}":
     ensure   => $cron_ensure,
     command  => $scancmd,
