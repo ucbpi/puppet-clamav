@@ -4,6 +4,7 @@ class clamav::params {
       $user = 'clamav'
       $clamscan_bin = '/usr/bin/clamscan'
       $freshclam_config_file = '/etc/clamav/freshclam.conf'
+      $freshclam_config_file_mode = '444'
     }
     'RedHat': {
     	$user = $facts['os']['release']['major'] ? {
@@ -12,11 +13,13 @@ class clamav::params {
 	}
       $clamscan_bin = '/usr/bin/clamscan'
       $freshclam_config_file = '/etc/freshclam.conf'
+      $freshclam_config_file_mode = '400'
     }
     default: {
       $user = 'clam'
       $clamscan_bin = '/usr/bin/clamscan'
       $freshclam_config_file = '/etc/freshclam.conf'
+      $freshclam_config_file_mode = '400'
     }
   }
 
