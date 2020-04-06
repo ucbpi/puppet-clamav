@@ -60,6 +60,11 @@ class clamav::freshclam (
     require => File[ "$clamav::params::freshclam_config_file"],
   }
 
+  file { '/etc/cron.d/freshclam':
+    ensure  => absent,
+    require => File[ "$clamav::params::freshclam_config_file"],
+  }
+
   # ensure proper permissions on our logfile
   file { $logfile:
     ensure  => present,
