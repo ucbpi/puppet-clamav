@@ -60,7 +60,7 @@ class clamav::freshclam (
     require => File[ "$clamav::params::freshclam_config_file"],
   }
 
-  file { '/etc/cron.d/freshclam':
+  file { '/etc/cron.d/clamav-update':
     ensure  => absent,
     require => File[ "$clamav::params::freshclam_config_file"],
   }
