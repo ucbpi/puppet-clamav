@@ -6,7 +6,8 @@ class clamav (
   $whitelist_sig = [],
   $whitelist_sha = [],
   $whitelist_md5 = [],
-) {
+  $package_ensure = $clamav::params::package_ensure,
+) inherits clamav::params {
   include clamav::package
   include clamav::params
 

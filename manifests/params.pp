@@ -24,6 +24,7 @@ class clamav::params {
   }
 
   $package = 'clamav'
+  $package_ensure = present
 
   $clamd_config_file = '/etc/clamd.conf'
   $clamd_service_name = 'clamd'
