@@ -5,5 +5,5 @@
 class clamav::package {
   include clamav::params
 
-  package { $clamav::params::package: ensure => installed }
+  package { $clamav::params::package: ensure => $clamav::package_ensure }
 }

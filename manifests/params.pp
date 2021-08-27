@@ -2,16 +2,31 @@ class clamav::params {
   case $::osfamily {
     'Debian': {
       $user = 'clamav'
+      $package = 'clamav'
       $clamscan_bin = '/usr/bin/clamscan'
+      $freshclam_config_file = '/etc/clamav/freshclam.conf'
+      $freshclam_config_file_mode = '444'
+    }
+    'RedHat': {
+      $user = $facts['os']['release']['major'] ? {
+        6       => 'clam',
+        default => 'root',
+      }
+      $package = [ "clamav", "clamav-update"]
+      $clamscan_bin = '/usr/bin/clamscan'
+      $freshclam_config_file = '/etc/freshclam.conf'
+      $freshclam_config_file_mode = '400'
     }
     default: {
-      # we default to assuming RedHat family OSes
       $user = 'clam'
+      $package = 'clamav'
       $clamscan_bin = '/usr/bin/clamscan'
+      $freshclam_config_file = '/etc/freshclam.conf'
+      $freshclam_config_file_mode = '400'
     }
   }
 
-  $package = 'clamav'
+  $package_ensure = present
 
   $clamd_config_file = '/etc/clamd.conf'
   $clamd_service_name = 'clamd'

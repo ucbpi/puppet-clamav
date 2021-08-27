@@ -6,7 +6,8 @@ class clamav (
   $whitelist_sig = [],
   $whitelist_sha = [],
   $whitelist_md5 = [],
-) {
+  $package_ensure = $clamav::params::package_ensure,
+) inherits clamav::params {
   include clamav::package
   include clamav::params
 
@@ -54,5 +55,9 @@ class clamav (
   file { '/var/lib/clamav/local.fp':
     ensure  => $whitelist_md5_ensure,
     content => template('clamav/whitelist.fp.erb')
+  }
+
+  file { '/var/log/clamav':
+      ensure => directory,
   }
 }
