@@ -6,5 +6,4 @@ class clamav::package {
   include clamav::params
 
   package { $clamav::params::package: ensure => $clamav::package_ensure }
-  notify { "clamav package $clamav::params::package: ensure => $clamav::package_ensure": }
 }
